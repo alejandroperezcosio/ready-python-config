@@ -33,10 +33,10 @@ class Config:
         environment = self.args.environment
         config = "-%s" % self.args.config if self.args.config else ""
 
-        current_dir =  os.path.abspath(os.path.dirname(__file__))
+        cwd = os.getcwd()
 
-        specific_config_file = os.path.abspath(current_dir + "/../config/%s%s.json" % (environment, config))
-        env_config_file = os.path.abspath(current_dir + "/../config/%s.json" % (environment))
+        specific_config_file = os.path.abspath(cwd + "/config/%s%s.json" % (environment, config))
+        env_config_file = os.path.abspath(cwd + "/config/%s.json" % (environment))
 
         # Try to use the <env>-<conf> file
         conf = os.path.exists(specific_config_file) and open(specific_config_file)
