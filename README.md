@@ -8,8 +8,18 @@ pip install git+https://github.com/alejandroperezcosio/ready-python-config.git
 ```
 
 ## Usage
+With a directory structure like this:
 ```bash
-python app.py -env=staging -c=elead
+~/apps/<project_name>/config/
+~/apps/<project_name>/config/default.json
+~/apps/<project_name>/config/production.json
+~/apps/<project_name>/config/production-customer1.json
+~/apps/<project_name>/config/production-customer2.json
+~/apps/<project_name>/config/production-customer3.json
+```
+
+```bash
+python app.py -env=production -c=customer2
 ```
 
 ```python
