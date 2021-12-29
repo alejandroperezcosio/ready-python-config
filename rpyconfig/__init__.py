@@ -10,13 +10,29 @@ parser.add_argument("--config", "-c", help="Configuration to use", default="")
 args = parser.parse_args()
 
 
-class DictToObject(object):
+
+class Objectify:
     def __init__(self, dictionary):
         for key, value in dictionary.items():
-            if type(value) == dict:
-                setattr(self, key, DictToObject(value))
+            if isinstance(value, dict):
+                f = Objectify(value)
+                self.__dict__.update({key: f})
+            elif isinstance(value, list):
+                t = []
+                for i in value:
+                    t.append(Objectify(i)) if isinstance(i, dict) else t.append(i)
+                self.__dict__.update({key: t})
             else:
-                setattr(self, key, value)
+                self.__dict__.update({key: value})
+
+# -- Deprecated --
+# class DictToObject(object):
+#     def __init__(self, dictionary):
+#         for key, value in dictionary.items():
+#             if type(value) == dict:
+#                 setattr(self, key, DictToObject(value))
+#             else:
+#                 setattr(self, key, value)
 
 
 class Config:
@@ -44,7 +60,7 @@ class Config:
         if not conf: conf = open(env_config_file)
 
         # Make the json config a nested object
-        configuration = DictToObject(json.load(conf))
+        configuration = Objectify(json.load(conf))
 
         return configuration
 
